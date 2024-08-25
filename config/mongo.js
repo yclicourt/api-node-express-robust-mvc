@@ -11,7 +11,7 @@ const dbConnectNosql = async () => {
           });
         console.log("*** CONEXION CORRECTA *** ");
     } catch (error) {
-        console.log("*** ERROR DE CONEXION *** ");
+        console.log("*** ERROR DE CONEXION *** ",error);
     }
 };
 

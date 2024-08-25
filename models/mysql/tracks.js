@@ -20,7 +20,7 @@ const Tracks = sequelize.define(
     artist_name: {
       type: DataTypes.STRING,
     },
-    artist_name: {
+    artist_nickname: {
       type: DataTypes.STRING,
     },
 

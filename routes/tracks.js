@@ -7,7 +7,7 @@ const checkRol = require("../middleware/rol");
 
 //TODO http://localhost/tracks GET,POST,DELETE,PUT
 
-router.get("/",authMiddleware, getItems);
+router.get("/", getItems);
 router.get("/:id",authMiddleware, validatorGetItem,getItem);
 router.post("/",
 authMiddleware,

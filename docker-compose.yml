@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  app:
+    image: yoandevelop/api-tracks
+    build:
+      context: .
+    command: sh -c 'sleep 10; npm start'
+    env_file:
+      - .env
+    depends_on:
+      - dbmongo
+    networks:
+      - tracks_network
+
+  db:
+    image: mysql
+    container_name: db-tracks
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - vol_mysql:/var/lib/mysql
+    networks:
+      - tracks_network
+
+  dbmongo:
+    image: mongo
+    container_name: db-tracks-mongo
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 27017:27017
+    volumes:
+      - vol_mongo:/etc/mongo
+    networks:
+      - tracks_network
+
+
+volumes:
+  vol_mysql:
+  vol_mongo:
+networks:
+  tracks_network:
