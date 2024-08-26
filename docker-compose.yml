@@ -1,6 +1,17 @@
 version: "3.9"
 
 services:
+  proxy:
+    image: nginx
+    ports:
+      - 8083:80
+    volumes:
+      - ../ops/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - tracks_network
+    depends_on:
+      - app
+
   app:
     image: yoandevelop/api-tracks
     build:
@@ -35,15 +46,15 @@ services:
     image: mongo
     container_name: db-tracks-mongo
     restart: always
-    env_file:
-      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
       - 27017:27017
     volumes:
       - vol_mongo:/etc/mongo
     networks:
       - tracks_network
-
 
 volumes:
   vol_mysql:

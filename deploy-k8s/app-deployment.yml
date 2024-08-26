@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-tracks
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-tracks
+  template:
+    metadata:
+      labels:
+        app: api-tracks
+    spec:
+      containers:
+        - name: proxy
+          image: nginx
+          ports:
+          - containerPort: 80
+            name: proxy
+          volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+
+        - name: api-tracks
+          image: yoandevelop/api-tracks
+          envFrom:
+            - secretRef:
+                name: app-secret
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: api-tracks
+              containerPort: 3000
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-tracks
+  namespace: demo
+spec:
+  type: NodePort
+  selector:
+    app: api-tracks
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
