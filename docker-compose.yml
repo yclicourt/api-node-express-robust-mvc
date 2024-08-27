@@ -6,7 +6,7 @@ services:
     ports:
       - 8083:80
     volumes:
-      - ../ops/nginx.conf:/etc/nginx/nginx.conf
+      - ./ops/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - tracks_network
     depends_on:
@@ -26,29 +26,26 @@ services:
     networks:
       - tracks_network
 
-  db:
-    image: mysql
-    container_name: db-tracks
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - 3306:3306
-    volumes:
-      - vol_mysql:/var/lib/mysql
-    networks:
-      - tracks_network
+  # db:
+  #   image: mysql
+  #   container_name: db-tracks
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - vol_mysql:/var/lib/mysql
+  #   networks:
+  #     - tracks_network
 
   dbmongo:
     image: mongo
     container_name: db-tracks-mongo
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
       - 27017:27017
     volumes:

@@ -13,17 +13,3 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /mnt/data
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongo-pv-claim
-  namespace: demo
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
